@@ -245,10 +245,13 @@ void qp_finish_print_log(FILE *fout, Ptr<RdmaQueuePair> q) {
            IntHeader::GetStaticSize()); // translate to the minimum bytes
                                         // required (with header but no INT)
   uint64_t standalone_fct = base_rtt + total_bytes * 8000000000lu / b;
-  // sip, dip, sport, dport, size (B), start_time, fct (ns), standalone_fct (ns)
-  fprintf(fout, "%08x %08x %u %u %lu %lu %lu %lu\n", q->sip.Get(), q->dip.Get(),
-          q->sport, q->dport, q->m_size, q->startTime.GetTimeStep(),
-          (Simulator::Now() - q->startTime).GetTimeStep(), standalone_fct);
+  uint64_t fct = (Simulator::Now() - q->startTime).GetTimeStep();
+  double throughput = (double)total_bytes * 8 / fct;
+  // sip, dip, sid, did, sport, dport, size (B), start_time, fct (ns), standalone_fct (ns), throughput (Gbps)
+  fprintf(fout, "%08x %08x %u %u %u %u %lu %lu %lu %lu %lf\n", q->sip.Get(),
+          q->dip.Get(), sid, did, q->sport, q->dport, q->m_size,
+          q->startTime.GetTimeStep(),
+          fct, standalone_fct, throughput);
   fflush(fout);
 }
 
