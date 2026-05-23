@@ -12,17 +12,27 @@ LABEL maintainer="Jinsun Yoo <jinsun@gatech.edu>"
 
 
 ### ================== System Setups ======================
+## Using Args and host proxies.
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+ARG NO_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY \
+    HTTPS_PROXY=$HTTPS_PROXY \
+    NO_PROXY=$NO_PROXY
+
+
 ## Install System Dependencies
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt -y update
 RUN apt -y install \
     coreutils wget vim git \
-    gcc g++ clang-format \
+    gcc g++ gdb clang-format \
     make cmake \
     libboost-dev libboost-program-options-dev \
     openmpi-bin openmpi-doc libopenmpi-dev \
     python3.11 python3-pip python3-venv \
-    graphviz
+    graphviz \
+    clangd bear
 
 ## Create Python venv: Required for Python 3.11
 RUN python3 -m venv /opt/venv/astra-sim

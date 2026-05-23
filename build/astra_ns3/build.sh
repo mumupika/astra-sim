@@ -15,7 +15,7 @@ function setup {
 function compile {
     cd "${NS3_DIR}"
     ./ns3 configure --enable-mpi
-    ./ns3 build AstraSimNetwork -j $(nproc)
+    bear --output build/compile_commands.json -- ./ns3 build AstraSimNetwork -j $(nproc)
     cd "${SCRIPT_DIR:?}"
 }
 function cleanup {
@@ -29,7 +29,7 @@ function cleanup_result {
 function debug {
     cd "${NS3_DIR}"
     ./ns3 configure --enable-mpi --build-profile debug
-    ./ns3 build AstraSimNetwork -j 12 -v
+    bear --output build/compile_commands.json -- ./ns3 build AstraSimNetwork -j $(nproc) -v
     cd "${NS3_DIR}/build/scratch"
 }
 # Main Script

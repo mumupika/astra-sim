@@ -38,14 +38,14 @@ function setup() {
 function compile_astrasim_analytical() {
   # compile AstraSim
   cd "${BUILD_DIR:?}" || exit
-  cmake .. -DBUILDTARGET="$1"
+  cmake .. -DBUILDTARGET="$1" -DCMAKE_EXPORT_COMPILE_COMMANDS=1
   cmake --build . -j "${NUM_THREADS:?}"
 }
 
 function compile_astrasim_analytical_as_debug() {
   # compile AstraSim
   cd "${BUILD_DIR:?}" || exit
-  cmake .. -DBUILDTARGET="$1" -DCMAKE_BUILD_TYPE=Debug
+  cmake .. -DBUILDTARGET="$1" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1
   cmake --build . --config=Debug -j "${NUM_THREADS:?}"
 }
 
